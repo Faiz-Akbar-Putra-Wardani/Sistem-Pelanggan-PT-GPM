@@ -10,9 +10,29 @@ class ProvinsiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $limit = 10;
+        $data = Provinsi::query();
+        if ($request->filled('limit') && is_numeric($request->limit)) {
+            $limit = intval($request->limit);
+        }
+        if ($request->filled('type')) {
+            $data->where('type', $request->type);
+        }
+        if ($request->filled('name')) {
+            $data->where('name', 'like', "%$request->name%");
+        }
+        if ($request->filled('code')) {
+            $data->where('code', $request->code);
+        }
+        $result = $data->paginate($limit);
+        return response()->json($result);
+    }
+
+    public function getAll()
+    {
+        return response()->json(Provinsi::all());
     }
 
     /**
@@ -34,9 +54,13 @@ class ProvinsiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Provinsi $provinsi)
+    public function show($id)
     {
-        //
+        $provinsi = Provinsi::find($id);
+        if (!$provinsi) {
+            return response()->json(['data' => null, 'message' => 'Not Found!']);
+        }
+        return response()->json(['data' => $provinsi, 'message' => 'success']);
     }
 
     /**
@@ -62,4 +86,4 @@ class ProvinsiController extends Controller
     {
         //
     }
-}
+ }
