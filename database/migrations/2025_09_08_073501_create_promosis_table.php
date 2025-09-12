@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('promosis', function (Blueprint $table) {
         $table->id();
-        $table->string('kode_promosi', 50)->unique()->nullable();
-        $table->string('nama_program_promosi', 255)->nullable();
-        $table->date('periode_mulai')->nullable();
-        $table->date('periode_selesai')->nullable();
+        $table->string('kode_promosi', 50)->unique();
+        $table->string('nama_program_promosi', 255);
+        $table->date('periode_mulai');
+        $table->date('periode_selesai');
         $table->text('note')->nullable();
         $table->timestamps();
         });
