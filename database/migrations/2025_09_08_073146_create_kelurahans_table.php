@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kelurahans', function (Blueprint $table) {
+       Schema::create('kelurahans', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('name');
+            $table->string('code');
+            $table->string('full_code');
+            $table->string('pos_code');
+            $table->unsignedBigInteger('kecamatan_id');
+            $table->foreign('kecamatan_id')->references('id')->on('kecamatans')->cascadeOnUpdate()->cascadeOnDelete();
+            // $table->timestamps();
         });
     }
 
