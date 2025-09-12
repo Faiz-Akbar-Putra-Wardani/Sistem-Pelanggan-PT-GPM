@@ -25,23 +25,23 @@ return new class extends Migration
         $table->foreignId('kabupaten_ktp_id')->constrained('kabupatens');
         $table->foreignId('kecamatan_ktp_id')->constrained('kecamatans');
         $table->foreignId('kelurahan_ktp_id')->constrained('kelurahans');
-        $table->string('kodepos_ktp', 10)->nullable();
+        $table->string('kodepos_ktp', 10);
 
         $table->text('alamat_instalasi');
         $table->foreignId('provinsi_instalasi_id')->constrained('provinsis');
         $table->foreignId('kabupaten_instalasi_id')->constrained('kabupatens');
         $table->foreignId('kecamatan_instalasi_id')->constrained('kecamatans');
         $table->foreignId('kelurahan_instalasi_id')->constrained('kelurahans');
-        $table->string('kodepos_instalasi', 10)->nullable();
+        $table->string('kodepos_instalasi', 10);
 
         $table->string('pekerjaan', 100);
         $table->string('jenis_tempat_tinggal', 100);
-        $table->string('nomor_telepon', 20);
+        $table->string('nomor_telepon', 20)->nullable();
         $table->string('nomor_ponsel', 20);
         $table->string('no_fax', 20)->nullable();
 
         $table->timestamps();
-        });
+    });
     }
 
     /**
