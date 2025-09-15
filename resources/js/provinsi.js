@@ -36,7 +36,7 @@ $(function () {
             let options = '<option value="">-- Pilih Kabupaten --</option>';
             kabupatenList.forEach((k) => {
                 let selected = selectedId && selectedId == k.id ? "selected" : "";
-                options += <option value="${k.id}" ${selected}>${k.name}</option>;
+                options += `<option value="${k.id}" ${selected}>${k.name}</option>`;
             });
             $(target).html(options);
             setDisabled(target, false);
@@ -59,7 +59,7 @@ $(function () {
             let options = '<option value="">-- Pilih Kecamatan --</option>';
             kecamatanList.forEach((k) => {
                 let selected = selectedId && selectedId == k.id ? "selected" : "";
-                options += <option value="${k.id}" ${selected}>${k.name}</option>;
+                options += `<option value="${k.id}" ${selected}>${k.name}</option>`;
             });
             $(target).html(options);
             setDisabled(target, false);
@@ -82,7 +82,7 @@ $(function () {
             let options = '<option value="">-- Pilih Kelurahan --</option>';
             kelurahanList.forEach((k) => {
                 let selected = selectedId && selectedId == k.id ? "selected" : "";
-                options += <option value="${k.id}" ${selected}>${k.name}</option>;
+                options += `<option value="${k.id}" ${selected}>${k.name}</option>`;
             });
             $(target).html(options);
             setDisabled(target, false);
