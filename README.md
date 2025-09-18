@@ -7,8 +7,8 @@ Memiliki role **Owner**, **Marketing**, dan **Teknisi** dengan fitur CRUD sesuai
 
 1. **Clone Repository**
    ```bash
-   https://github.com/Faiz-Akbar-Putra-Wardani/testing-project-gpm.git
-   cd testing-gpm-project
+ https://github.com/Faiz-Akbar-Putra-Wardani/Sistem-Pelanggan-PT-GPM.git
+   cd Sistem-Pelanggan-PT-GPM
    
    **Install Dependency PHP**
    composer install
