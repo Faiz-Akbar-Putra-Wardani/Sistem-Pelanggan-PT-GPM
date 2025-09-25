@@ -78,7 +78,7 @@
 <div class="row">
   <div class="col-md-3 mb-3">
     <label for="total_biaya_per_bulan" class="form-label">Grand Total <span class="text-danger">*</span></label>
-    <input type="number" step="0.01" id="total_biaya_per_bulan" name="total_biaya_per_bulan"
+    <input type="number"  id="total_biaya_per_bulan" name="total_biaya_per_bulan"
            value="{{ old('total_biaya_per_bulan', $transaksi->total_biaya_per_bulan ?? 0) }}"
            class="form-control d-none @error('total_biaya_per_bulan') is-invalid @enderror" readonly>
     <div id="display_total_biaya" class="form-control fw-bold text-primary">Rp 0</div>

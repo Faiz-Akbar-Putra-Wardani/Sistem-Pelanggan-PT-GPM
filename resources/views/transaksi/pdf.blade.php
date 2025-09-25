@@ -479,18 +479,23 @@
   <td class="input-cell" colspan="2">
     <div style="padding:6px;">
       <label>
-        <input class="small-checkbox" type="checkbox" {{ ($transaksi->pelanggan->jenis_tempat_tinggal ?? '') == 'Rumah Tinggal' ? 'checked' : '' }} disabled>
+        <input class="small-checkbox" type="checkbox"
+          {{ ($transaksi->pelanggan->jenis_tempat_tinggal ?? '') == 'Rumah Tinggal' ? 'checked' : '' }} disabled>
         Rumah Tinggal
       </label>&nbsp;&nbsp;
 
       <label>
-        <input class="small-checkbox" type="checkbox" {{ ($transaksi->pelanggan->jenis_tempat_tinggal ?? '') == 'Apartemen' ? 'checked' : '' }} disabled>
+        <input class="small-checkbox" type="checkbox"
+          {{ ($transaksi->pelanggan->jenis_tempat_tinggal ?? '') == 'Apartemen' ? 'checked' : '' }} disabled>
         Apartemen
       </label>&nbsp;&nbsp;
 
       <label>
         <input class="small-checkbox" type="checkbox"
-          {{ ($transaksi->pelanggan->jenis_tempat_tinggal ?? '') == 'Lainnya' || $transaksi->pelanggan->tempat_tinggal_lainnya ? 'checked' : '' }}
+          {{ ($transaksi->pelanggan->jenis_tempat_tinggal ?? '') == 'Lainnya' 
+              || $transaksi->pelanggan->tempat_tinggal_lainnya 
+              || !in_array($transaksi->pelanggan->jenis_tempat_tinggal, ['Rumah Tinggal','Apartemen','Lainnya']) 
+              ? 'checked' : '' }}
           disabled>
         Lainnya
         <span class="dots">
@@ -504,6 +509,7 @@
     </div>
   </td>
 </tr>
+
 
   </table>
 
