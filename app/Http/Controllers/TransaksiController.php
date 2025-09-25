@@ -19,6 +19,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TransaksiController extends Controller
 {
+      private function cleanNumber($value): int
+    {
+        return (int) str_replace([',', '.'], '', $value);
+    }
     public function index()
     {
         return view('transaksi.index');
@@ -147,14 +151,15 @@ class TransaksiController extends Controller
                 );
 
 
-                $biayaRegistrasi  = (float) preg_replace('/[^0-9]/', '', $request->biaya_registrasi);
-                $biayaMaintenance = (float) preg_replace('/[^0-9]/', '', $request->biaya_maintenance);
+                 // --- Biaya ---
+                $biayaRegistrasi  = $this->cleanNumber($request->biaya_registrasi);
+                $biayaMaintenance = $this->cleanNumber($request->biaya_maintenance);
 
 
                 if ($request->paket_internet_id === 'Lainnya') {
                     $paketBaru = PaketInternet::create([
                         'nama_paket'    => $request->nama_paket,
-                        'harga_bulanan' => (float) preg_replace('/[^0-9]/', '', $request->harga_bulanan),
+                         'harga_bulanan' => $this->cleanNumber($request->harga_bulanan),
                         'is_active'     => true,
                     ]);
                     $paketInternetId = $paketBaru->id;
@@ -162,7 +167,7 @@ class TransaksiController extends Controller
                 } else {
                     $paket = PaketInternet::findOrFail($request->paket_internet_id);
                     $paketInternetId = $paket->id;
-                    $biayaPaket = $paket->harga_bulanan;
+                    $biayaPaket = $this->cleanNumber($request->biaya_paket_internet) ?: $paket->harga_bulanan;
                 }
 
 
@@ -265,14 +270,15 @@ class TransaksiController extends Controller
             ));
 
 
-            $biayaRegistrasi  = (float) preg_replace('/[^0-9]/', '', $request->biaya_registrasi);
-            $biayaMaintenance = (float) preg_replace('/[^0-9]/', '', $request->biaya_maintenance);
+            // --- Biaya ---
+                $biayaRegistrasi  = $this->cleanNumber($request->biaya_registrasi);
+                $biayaMaintenance = $this->cleanNumber($request->biaya_maintenance);
 
 
             if ($request->paket_internet_id === 'Lainnya') {
                 $paketBaru = PaketInternet::create([
                     'nama_paket'    => $request->nama_paket,
-                    'harga_bulanan' => (float) preg_replace('/[^0-9]/', '', $request->harga_bulanan),
+                      'harga_bulanan' => $this->cleanNumber($request->harga_bulanan),
                     'is_active'     => true,
                 ]);
                 $paketInternetId = $paketBaru->id;
@@ -280,7 +286,10 @@ class TransaksiController extends Controller
             } else {
                 $paket = PaketInternet::findOrFail($request->paket_internet_id);
                 $paketInternetId = $paket->id;
-                $biayaPaket = $paket->harga_bulanan;
+                 
+                $biayaPaket = $request->filled('biaya_paket_internet')
+                    ? $this->cleanNumber($request->biaya_paket_internet)
+                    : $paket->harga_bulanan;
             }
 
 

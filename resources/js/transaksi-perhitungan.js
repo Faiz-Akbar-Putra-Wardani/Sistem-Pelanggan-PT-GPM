@@ -6,23 +6,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const ppnNominal = document.getElementById("ppn_nominal");
     const totalBiaya = document.getElementById("total_biaya_per_bulan");
 
-    // Elemen untuk menampilkan Rupiah
+    
     const displayPPN = document.getElementById("display_ppn_nominal");
     const displayTotal = document.getElementById("display_total_biaya");
 
+    
+    function cleanNumber(val) {
+        return parseInt(String(val).replace(/[^0-9]/g, "")) || 0;
+    }
+
     function formatRupiah(value) {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+        return new Intl.NumberFormat('id-ID', { 
+            style: 'currency', 
+            currency: 'IDR' 
+        }).format(value);
     }
 
     function hitungTotal() {
-        const reg = parseFloat(biayaRegistrasi?.value) || 0;
-        const paket = parseFloat(biayaPaket?.value) || 0;
-        const maint = parseFloat(biayaMaintenance?.value) || 0;
-        const ppn = (reg + paket + maint) * 0.1;
+        const reg = cleanNumber(biayaRegistrasi?.value);
+        const paket = cleanNumber(biayaPaket?.value);
+        const maint = cleanNumber(biayaMaintenance?.value);
+
+        const ppn = Math.round((reg + paket + maint) * 0.1);
         const total = reg + paket + maint + ppn;
 
-        if (ppnNominal) ppnNominal.value = ppn.toFixed(0);
-        if (totalBiaya) totalBiaya.value = total.toFixed(0);
+        if (ppnNominal) ppnNominal.value = ppn;
+        if (totalBiaya) totalBiaya.value = total;
 
         if (displayPPN) displayPPN.textContent = formatRupiah(ppn);
         if (displayTotal) displayTotal.textContent = formatRupiah(total);
@@ -47,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? document.getElementById("paket_internet_custom")?.value
                 : paketSelect.options[paketSelect.selectedIndex]?.text || "";
 
-            const total = parseFloat(totalBiaya?.value) || 0;
+            const total = cleanNumber(totalBiaya?.value);
 
             Swal.fire({
                 title: "Ringkasan Transaksi",
@@ -68,6 +77,4 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-
-
 });
