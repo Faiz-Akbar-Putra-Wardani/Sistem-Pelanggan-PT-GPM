@@ -47,6 +47,15 @@ class Transaksi extends Model
             return 'IDGPM' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
         }
 
+        protected $casts = [
+                'biaya_registrasi' => 'float',
+                'biaya_paket_internet' => 'float',
+                'biaya_maintenance' => 'float',
+                'ppn_nominal' => 'float',
+                'total_biaya_per_bulan' => 'float',
+            ];
+
+
 
     public function pelanggan()
     {
