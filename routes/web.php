@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['role:owner|marketing'])->group(function () {
         Route::resource('paket_internet', PaketInternetController::class);
-        Route::resource('bandwidth', BandwidthController::class);
+        Route::resource('bandwidths', BandwidthController::class)->names('bandwidth');
         Route::resource('promosi', PromosiController::class);
     });
 
