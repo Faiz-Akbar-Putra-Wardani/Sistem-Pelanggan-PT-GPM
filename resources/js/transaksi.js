@@ -1,7 +1,7 @@
 // 1. toggle input
 document.addEventListener("DOMContentLoaded", function () {
 
-    // === Next & Back Button ===
+    // Next & Back Button
     document.querySelectorAll(".nextBtn").forEach(btn => {
         btn.addEventListener("click", function() {
             let target = this.getAttribute("data-next");
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // === Toggle Input ===
+    // Toggle Input
     function toggleInput(selectId, inputIds) {
         const select = document.getElementById(selectId);
         if (!select) return;
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleInput("paket_internet_id", ["nama_paket", "harga_bulanan"]);
     toggleInput("bandwidth_id", "nilai");
 
-    // === Auto-fill Promosi ===
+    // Auto-fill Promosi
     const promosiSelect = document.getElementById("promosi_id");
     const promosiFields = document.getElementById("promosi_fields");
 
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         promosiSelect.dispatchEvent(new Event("change"));
     }
 
-    // === Button Submit (tampil di tab pembayaran) ===
+    //Button Submit (tampil di tab pembayaran)
     const formActions = document.getElementById("formActions");
     const transaksiTab = document.getElementById("transaksiTab");
 
