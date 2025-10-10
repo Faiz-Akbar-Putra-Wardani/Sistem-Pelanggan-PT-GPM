@@ -116,21 +116,21 @@ class TransaksiController extends Controller
     try {
         DB::transaction(function () use ($request) {
 
-            // --- Pekerjaan ---
+            // Pekerjaan 
             $pekerjaan = $request->pekerjaan;
             $pekerjaanLainnya = $request->pekerjaan_lainnya;
             if ($pekerjaan === 'Lainnya' && $pekerjaanLainnya) {
                 $pekerjaan = $pekerjaanLainnya;
             }
 
-            // --- Tempat tinggal ---
+            // Tempat tinggal 
             $tempatTinggal = $request->jenis_tempat_tinggal;
             $tempatTinggalLainnya = $request->tempat_tinggal_lainnya;
             if ($tempatTinggal === 'Lainnya' && $tempatTinggalLainnya) {
                 $tempatTinggal = $tempatTinggalLainnya;
             }
 
-            // --- Pelanggan ---
+            // Pelanggan 
             $pelanggan = Pelanggan::firstOrCreate(
                 ['no_ktp' => $request->no_ktp],
                 array_merge(
@@ -150,16 +150,16 @@ class TransaksiController extends Controller
                 )
             );
 
-            // --- Biaya ---
+            // Biaya 
             $biayaRegistrasi  = $this->cleanNumber($request->biaya_registrasi);
             $biayaMaintenance = $this->cleanNumber($request->biaya_maintenance);
             $biayaPaket       = $this->cleanNumber($request->biaya_paket_internet);
 
-            // --- Paket Internet ---
+            // Paket Internet 
             if ($request->paket_internet_id === 'Lainnya') {
                 $paketBaru = PaketInternet::create([
                     'nama_paket'    => $request->nama_paket,
-                    'harga_bulanan' => $this->cleanNumber($request->harga_bulanan), // default paket
+                    'harga_bulanan' => $this->cleanNumber($request->harga_bulanan), 
                     'is_active'     => true,
                 ]);
                 $paketInternetId = $paketBaru->id;
@@ -168,7 +168,7 @@ class TransaksiController extends Controller
                 $paketInternetId = $paket->id;
             }
 
-            // --- Bandwidth ---
+            // Bandwidth 
             if ($request->bandwidth_id === 'Lainnya') {
                 $bandwidthBaru = Bandwidth::create([
                     'nilai' => $request->nilai,
@@ -179,12 +179,12 @@ class TransaksiController extends Controller
                 $bandwidthId = $bandwidth->id;
             }
 
-            // --- Hitung total ---
+            // Hitung total 
             $ppnPersen  = 10;
             $ppnNominal = ($biayaRegistrasi + $biayaPaket + $biayaMaintenance) * ($ppnPersen / 100);
             $total      = $biayaRegistrasi + $biayaPaket + $biayaMaintenance + $ppnNominal;
 
-            // --- Simpan Transaksi ---
+            // Simpan Transaksi 
             Transaksi::create(array_merge(
                 $request->only([
                     'tanggal_daftar','promosi_id','metode_billing','alamat_penagihan',
@@ -196,7 +196,7 @@ class TransaksiController extends Controller
                     'paket_internet_id'      => $paketInternetId,
                     'bandwidth_id'           => $bandwidthId,
                     'biaya_registrasi'       => $biayaRegistrasi,
-                    'biaya_paket_internet'   => $biayaPaket, // selalu dari input transaksi
+                    'biaya_paket_internet'   => $biayaPaket, 
                     'biaya_maintenance'      => $biayaMaintenance,
                     'ppn_persen'             => $ppnPersen,
                     'ppn_nominal'            => $ppnNominal,
@@ -235,17 +235,17 @@ class TransaksiController extends Controller
         DB::transaction(function () use ($request, $id) {
             $transaksi = Transaksi::findOrFail($id);
 
-            // --- Pekerjaan ---
+            // Pekerjaan 
             $pekerjaan = $request->pekerjaan === 'Lainnya' && $request->pekerjaan_lainnya
                 ? $request->pekerjaan_lainnya
                 : $request->pekerjaan;
 
-            // --- Tempat Tinggal ---
+            // Tempat Tinggal 
             $tempatTinggal = $request->jenis_tempat_tinggal === 'Lainnya' && $request->tempat_tinggal_lainnya
                 ? $request->tempat_tinggal_lainnya
                 : $request->jenis_tempat_tinggal;
 
-            // --- Update Pelanggan ---
+            // Update Pelanggan 
             $pelanggan = $transaksi->pelanggan;
             $pelanggan->update(array_merge(
                 $request->only([
@@ -263,16 +263,16 @@ class TransaksiController extends Controller
                 ]
             ));
 
-            // --- Biaya ---
+            // Biaya 
             $biayaRegistrasi  = $this->cleanNumber($request->biaya_registrasi);
             $biayaMaintenance = $this->cleanNumber($request->biaya_maintenance);
-            $biayaPaket       = $this->cleanNumber($request->biaya_paket_internet); // selalu dari transaksi
+            $biayaPaket       = $this->cleanNumber($request->biaya_paket_internet); 
 
-            // --- Paket Internet ---
+            // Paket Internet 
             if ($request->paket_internet_id === 'Lainnya') {
                 $paketBaru = PaketInternet::create([
                     'nama_paket'    => $request->nama_paket,
-                    'harga_bulanan' => $this->cleanNumber($request->harga_bulanan), // hanya default, tidak memengaruhi transaksi
+                    'harga_bulanan' => $this->cleanNumber($request->harga_bulanan), 
                     'is_active'     => true,
                 ]);
                 $paketInternetId = $paketBaru->id;
@@ -281,7 +281,7 @@ class TransaksiController extends Controller
                 $paketInternetId = $paket->id;
             }
 
-            // --- Bandwidth ---
+            // Bandwidth 
             if ($request->bandwidth_id === 'Lainnya') {
                 $bandwidthBaru = Bandwidth::create([
                     'nilai' => $request->nilai,
@@ -293,24 +293,24 @@ class TransaksiController extends Controller
                 $bandwidthId = $bandwidth->id;
             }
 
-            // --- Hitung Total ---
+            // Hitung Total 
             $ppnPersen  = 10;
             $ppnNominal = ($biayaRegistrasi + $biayaPaket + $biayaMaintenance) * ($ppnPersen / 100);
             $total      = $biayaRegistrasi + $biayaPaket + $biayaMaintenance + $ppnNominal;
 
-            // --- Update Transaksi ---
+            // Update Transaksi 
             $transaksi->update(array_merge(
                 $request->only([
                     'tanggal_daftar','promosi_id','metode_billing','alamat_penagihan',
                     'email_penagihan','metode_pembayaran','nomor_kartu_kredit','masa_berlaku_kartu'
                 ]),
                 [
-                    'no_id_pelanggan'        => $transaksi->no_id_pelanggan, // tetap pakai ID lama
+                    'no_id_pelanggan'        => $transaksi->no_id_pelanggan, 
                     'pelanggan_id'           => $pelanggan->id,
                     'paket_internet_id'      => $paketInternetId,
                     'bandwidth_id'           => $bandwidthId,
                     'biaya_registrasi'       => $biayaRegistrasi,
-                    'biaya_paket_internet'   => $biayaPaket, // SELALU dari input transaksi
+                    'biaya_paket_internet'   => $biayaPaket, 
                     'biaya_maintenance'      => $biayaMaintenance,
                     'ppn_persen'             => $ppnPersen,
                     'ppn_nominal'            => $ppnNominal,
